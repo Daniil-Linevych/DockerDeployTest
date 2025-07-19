@@ -3,7 +3,7 @@ require 'vendor/autoload.php';
 
 $redis = new Predis\Client([
     'scheme' => 'tcp',
-    'host' => 'redis-test',
+    'host' => 'redis',
     'port' => 6379,
 ]);
 
