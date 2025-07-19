@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  php:
+    build: .
+    image: php:8.2-apache
+    container_name: php-app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - mysql
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  redis:
+    image: redis
+    container_name: redis-test
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: appdb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  mysql-data:
